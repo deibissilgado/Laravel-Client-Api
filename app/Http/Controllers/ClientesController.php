@@ -10,24 +10,19 @@ class ClientesController extends Controller
     /**
      * La URL del servidor API.
      */
-    protected $url;
+    protected $url, $token;
 
     /**
      * Constructor del controlador.
      */
     public function __construct()
     {
-        $token = '7|fipoKXf208kneSQgXzAptL9l6G3fBYqefBLpGnzf4bb365c4';
+        $this->token = '7|fipoKXf208kneSQgXzAptL9l6G3fBYqefBLpGnzf4bb365c4';
         // Reemplaza con el token real (admin, update, basic)
         // Obten el toquen en  http://laravel-api-rest-ful.test/setup 
         // Inicializamos la URL desde el archivo .env
         $this->url = env('URL_SERVER_API', 'http://127.0.0.1/');
-           // Realizamos la solicitud con el token en las cabeceras
-        $response = Http::withToken($token)->get($this->url.'/v1/clientes');
-        // $response = Http::get($this->url.'/v1/clientes');
-        $data = $response->json();
-        
-        return view('clientes.index', compact('data'));
+
       
     }
 
@@ -39,7 +34,14 @@ class ClientesController extends Controller
     {
               // Puedes usar $this->url aquí
               $url = $this->url;
-              return "URL configurada: $url";
+            //   return "URL configurada: $url";
+
+        // Realizamos la solicitud con el token en las cabeceras
+        // $response = Http::withToken($this->token)->get($this->url.'/v1/clientes');
+        $response = Http::get($this->url.'/v1/clientes');
+        $data = $response->json();
+        dd($data);
+        return view('clientes.index', compact('data'));
  
       
     }
