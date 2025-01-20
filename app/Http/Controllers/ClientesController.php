@@ -32,15 +32,15 @@ class ClientesController extends Controller
      */
     public function index()
     {
-              // Puedes usar $this->url aquí
+        
+        // Puedes usar $this->url aquí
               $url = $this->url;
-            //   return "URL configurada: $url";
-
         // Realizamos la solicitud con el token en las cabeceras
-        // $response = Http::withToken($this->token)->get($this->url.'/v1/clientes');
-        $response = Http::get($this->url.'/v1/clientes');
+        $response = Http::withToken($this->token)->get($this->url.'/clientes');
+        // $response = Http::get($this->url.'/clientes');
+
         $data = $response->json();
-        dd($data);
+     
         return view('clientes.index', compact('data'));
  
       
