@@ -87,7 +87,7 @@ class ClientesController extends Controller
         // Realizar la solicitud POST a la API
         $response = Http::withToken($this->token)
             ->post($this->url . '/clientes', $nuevoCliente);
-
+       
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente.');
@@ -104,8 +104,15 @@ class ClientesController extends Controller
     public function show(string $id)
     {
            // Realizar la solicitud GET a la API para obtener los detalles del cliente
+
+        /** Metodo sin facturas del cliente
+         *   $response = Http::withToken($this->token)
+         *    ->get($this->url . '/clientes/' . $id);
+         */
+      
         $response = Http::withToken($this->token)
-        ->get($this->url . '/clientes/' . $id);
+        ->get($this->url . '/clientes/' . $id . '?incluirFacturas=true'); // con facturas
+       
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -113,6 +120,7 @@ class ClientesController extends Controller
             $data = $response->json();
             
              $cliente = $data['data'];
+             
             // Pasar los datos del cliente a la vista
             return view('clientes.show', compact('cliente'));
         } else {

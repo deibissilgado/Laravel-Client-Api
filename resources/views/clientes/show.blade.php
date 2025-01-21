@@ -53,6 +53,35 @@
                
                </tbody>
            </table>
+            <!-- Mostrar facturas del cliente -->
+            <h2 class="mt-20 ">Facturas del cliente</h2>
+            @if (isset($cliente['facturas']) && count($cliente['facturas']) > 0)
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Estado</th>
+                            <th>Fecha Facturada</th>
+                            <th>Fecha Pagada</th>
+                  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($cliente['facturas'] as $factura)
+                            <tr>
+                                <td>{{ $factura['cantidad'] }}</td>
+                                <td>{{ $factura['estado'] }}</td>
+                                <td>{{ $factura['fechaFacturada'] }}</td>
+                                <td>{{ $factura['fechaPagada'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-info">
+                    Este cliente no tiene facturas registradas.
+                </div>
+            @endif
    
     </div>
 </body>
