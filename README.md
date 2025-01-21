@@ -67,4 +67,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 Instale un cliente http HTTP Client
 composer require guzzlehttp/guzzle
-Si tiene problemas con le servidor tal vez le ayude esta opción: php -S 127.0.0.1:3000 -t public
+Si tiene problemas con php artisan serve ,  puedes intentar ejecutar el servidor directamente desde el directorio public usando el comando: 
+php -S 127.0.0.1:3000 -t public
