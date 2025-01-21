@@ -18,8 +18,8 @@
                 {{ session('success') }}
             </div>
         @endif
-        <p>Clientes  <a href="{{ route('clientes.create') }}" class="text-white bg-green-700 hover:bg-green-800 rounded-lg text-sm px-4 py-1  mb-1">Crear</a></p>
-        @if(isset($data['data']) && count($data['data']) > 0)
+        <p>Clientes</p>
+       
            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                <thead>
                    <tr>
@@ -35,7 +35,7 @@
                    </tr>
                </thead>
                <tbody>
-                   @foreach($data['data'] as $cliente)
+                 
                    <tr>
                        <td>{{ $cliente['id'] }}</td>
                        <td>{{ $cliente['name'] }}</td>
@@ -46,21 +46,14 @@
                        <td>{{ $cliente['departamento'] }}</td>
                        <td>{{ $cliente['codigoPostal'] }}</td>
                        <td class="actions">
-                           <a href="{{ route('clientes.show', $cliente['id']) }}" class="text-white bg-gray-700 hover:bg-gray-800 rounded-lg text-sm px-4 py-1 mb-1">Ver</a>
-                           <a href="{{ route('clientes.edit', $cliente['id']) }}" class="text-white bg-green-700 hover:bg-green-800 rounded-lg text-sm px-4 py-1  mb-1">Editar</a>
-                           <form action="{{ route('clientes.destroy', $cliente['id']) }}" method="post" style="display:inline;">
-                               @csrf
-                               @method('DELETE')
-                               <button class="text-white bg-red-700 hover:bg-red-800 rounded-lg text-sm px-4 py-1  mb-1" type="submit">Eliminar</button>
-                           </form>
+                           <a href="{{ route('clientes.index') }}" class="text-white bg-gray-700 hover:bg-gray-800 rounded-lg text-sm px-4 py-1 mb-1">Volver</a>
+                  
                        </td>
                    </tr>
-                   @endforeach
+               
                </tbody>
            </table>
-           @else
-               <p>No hay clientes</p>
-           @endif
+   
     </div>
 </body>
 </html>

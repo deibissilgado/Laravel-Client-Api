@@ -51,7 +51,7 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        //
+        return view('clientes.create');
     }
 
     /**
@@ -59,7 +59,43 @@ class ClientesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+           // Validar los datos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'tipo' => 'required|string|max:1',
+            'email' => 'required|email|unique:clientes,email',
+            'direccion' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255',
+            'departamento' => 'required|string|max:255',
+            'codigoPostal' => 'required|string|max:10',
+        ], [
+            'name.required' => 'El campo nombre es obligatorio.',
+            'email.unique' => 'El correo electrónico ya está registrado.',
+        ]);
+
+        // Datos del nuevo cliente
+        $nuevoCliente = [
+            'name' => $request->input('name'),
+            'tipo' => $request->input('tipo'),
+            'email' => $request->input('email'),
+            'direccion' => $request->input('direccion'),
+            'ciudad' => $request->input('ciudad'),
+            'departamento' => $request->input('departamento'),
+            'codigoPostal' => $request->input('codigoPostal'),
+        ];
+
+        // Realizar la solicitud POST a la API
+        $response = Http::withToken($this->token)
+            ->post($this->url . '/clientes', $nuevoCliente);
+
+        // Verificar si la solicitud fue exitosa
+        if ($response->successful()) {
+            return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente.');
+        } else {
+            // Si la API devuelve errores de validación
+            $errors = $response->json()['errors'] ?? [];
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
     }
 
     /**
@@ -67,7 +103,22 @@ class ClientesController extends Controller
      */
     public function show(string $id)
     {
-        //
+           // Realizar la solicitud GET a la API para obtener los detalles del cliente
+        $response = Http::withToken($this->token)
+        ->get($this->url . '/clientes/' . $id);
+
+        // Verificar si la solicitud fue exitosa
+        if ($response->successful()) {
+            // Obtener los datos del cliente
+            $data = $response->json();
+            
+             $cliente = $data['data'];
+            // Pasar los datos del cliente a la vista
+            return view('clientes.show', compact('cliente'));
+        } else {
+            // Redirigir con un mensaje de error
+            return redirect()->route('clientes.index')->with('error', 'Error al obtener los detalles del cliente.');
+        }
     }
 
     /**
@@ -143,6 +194,17 @@ class ClientesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+            // Realizar la solicitud DELETE a la API
+        $response = Http::withToken($this->token)
+        ->delete($this->url . '/clientes/' . $id);
+
+        // Verificar si la solicitud fue exitosa
+        if ($response->successful()) {
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente.');
+        } else {
+            // Redirigir con un mensaje de error
+            return redirect()->back()->with('error', 'Error al eliminar el cliente.');
+        }
     }
 }
